@@ -7,9 +7,10 @@
 
 import UIKit
 
-class RedactorViewController: UIViewController {
+class RedactorViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet var noteTextView: UITextView!
+    @IBOutlet var doneButton: UIBarButtonItem!
     var dataManger = DataManager.shared
     var text = ""
     var index = 0
@@ -18,6 +19,16 @@ class RedactorViewController: UIViewController {
         super.viewDidLoad()
 
         noteTextView.text = text
+        noteTextView.delegate = self
+    }
+    
+    @IBAction func doneButtonPressed(_ sender: Any) {
+        noteTextView.endEditing(true)
+        doneButton.isHidden = true
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        doneButton.isHidden = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {

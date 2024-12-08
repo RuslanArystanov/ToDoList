@@ -6,7 +6,6 @@
 //
 
 struct Note {
-    
     static func creatingAnArrayOfNotes() -> [String]{
         var notes: [String] = []
         

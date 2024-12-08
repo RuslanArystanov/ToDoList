@@ -13,8 +13,17 @@ class ListTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.leftBarButtonItem = editButtonItem
+        tableView.rowHeight = 50
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        notes = Note.creatingAnArrayOfNotes()
+        tableView.reloadData()
+        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(redactorView(_:)))
+        tableView.addGestureRecognizer(gestureRecognizer)
+    }
+    
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -34,6 +43,25 @@ class ListTableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            notes.remove(at: indexPath.row)
+            DataManager.shared.notes.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .left)
+        }
+    }
+    
+    //MARK: - RedactorView
+    
+    @IBAction func redactorView(_ sender: UIGestureRecognizer) {
+        
+        let point = sender.location(in: tableView)
+        guard let indexPath = tableView.indexPathForRow(at: point) else { return }
+        
+        if sender.state == .began {
+            
+        }
+    }
     
     //MARK: - Navigation
 
